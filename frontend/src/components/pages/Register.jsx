@@ -1,8 +1,10 @@
 import React from 'react'
 import Login from './Login.jsx'
+import { Link, useNavigate } from 'react-router-dom';
 
 
 const Register = () => {
+  const navigate = useNavigate();
   return (
     <div className="min-h-screen flex items-center justify-center  p-4">
       <div className="bg-white rounded-lg  outline-1 outline-gray-300 shadow-lg flex flex-col md:flex-row w-full max-w-5xl">
@@ -51,7 +53,7 @@ const Register = () => {
             <div className="border-t border-green-300 my-4"></div>
             <button
               className="w-full text-green-600 bg-white outline shadow-md py-2 rounded hover:bg-green-700 hover:text-white"
-              onClick={() => {}}
+              onClick={() => { navigate("/verify") }}
             >
               Verify yourself!
             </button>

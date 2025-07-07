@@ -39,7 +39,7 @@ const Home = () => {
                 <img src="\src\assets\github.svg" alt="" className="w-6 ml-2" />
               </span>
             </button>
-            <div className="border-t border-green-300 my-4"></div>
+            <div className="border-t border-green-300 "></div>
 
             <input
               type="email"
@@ -51,12 +51,19 @@ const Home = () => {
               placeholder="Password"
               className="w-full px-4 py-2 bg-white  border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
+
             <button
-              className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+              className="w-full bg-green-600 text-white py-2 rounded mt-1 hover:bg-green-700"
               onClick={() => {}}
             >
               Log In
             </button>
+            <a
+              href="/forgotPassword"
+              className="text-green-700 px-1   text-sm hover:underline text-center font-semibold block"
+            >
+              Forgot Password? Click here!
+            </a>
           </div>
 
           <p className="mt-6 text-sm text-gray-600 text-center">
