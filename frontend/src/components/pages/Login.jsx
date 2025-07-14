@@ -1,8 +1,26 @@
-import React from 'react'
-import { Link, useNavigate } from 'react-router-dom'
+import React from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import toast from "react-hot-toast";
+import { useAuthStore } from "../../store/useAuthStore.js";
 
 const Login = () => {
-  const navigate = useNavigate();
+   const navigate = useNavigate();
+  const { user,login,onLoading } = useAuthStore();
+  const [form, setForm] = useState({ email: "", password: "" });
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await login(form);       
+      console.log(user);
+      navigate("/home");
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+ 
   return (
     <div className="min-h-screen flex items-center justify-center  p-4">
       <div className="bg-white rounded-lg  outline-1 outline-gray-300 shadow-lg flex flex-col md:flex-row w-full max-w-5xl">
@@ -37,24 +55,31 @@ const Login = () => {
               </span>
             </button>
             <div className="border-t border-green-300 "></div>
+            <form className="space-y-3">
+              <input
+                type="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="w-full px-4 py-2 bg-white border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                className="w-full px-4 py-2 bg-white  border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+              />
 
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full px-4 py-2 bg-white border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full px-4 py-2 bg-white  border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-            />
-
-            <button
-              className="w-full bg-green-600 text-white py-2 rounded mt-1 hover:bg-green-700"
-              onClick={() => { navigate("/home") }}
-            >
-              Log In
-            </button>
+              <button
+                className="w-full bg-green-600 text-white py-2 rounded mt-1 hover:bg-green-700"
+                type="submit"
+                disabled={onLoading}
+                onClick={handleSubmit}
+              >
+                {onLoading ? "Loading..." : "Log In"}
+              </button>
+            </form> 
             <a
               href="/forgotPassword"
               className="text-green-700 px-1   text-sm hover:underline text-center font-semibold block"
@@ -76,6 +101,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

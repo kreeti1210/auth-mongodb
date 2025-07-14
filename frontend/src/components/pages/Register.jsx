@@ -1,10 +1,27 @@
 import React from 'react'
 import Login from './Login.jsx'
 import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import toast from 'react-hot-toast';
+import { useAuthStore } from '../../store/useAuthStore.js';
+
 
 
 const Register = () => {
+  const { user,registerUser,onLoading } = useAuthStore();
   const navigate = useNavigate();
+  const [form,setForm]= useState({name:"",email:"",password:""});
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await registerUser(form);
+      console.log(user);
+      navigate("/verify");
+    } catch (error) {
+      console.log(error);   
+    }
+  }
+
   return (
     <div className="min-h-screen flex items-center justify-center  p-4">
       <div className="bg-white rounded-lg  outline-1 outline-gray-300 shadow-lg flex flex-col md:flex-row w-full max-w-5xl">
@@ -29,38 +46,49 @@ const Register = () => {
           </h2>
 
           <div className="space-y-3">
-            <input
-              type="name"
-              placeholder="Name"
-              className="w-full px-4 py-2 bg-white border rounded border-green-300 focus:outline-none focus:ring-2  focus:ring-green-600"
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              className="w-full px-4 py-2 bg-white border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-600"
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              className="w-full px-4 py-2 bg-white  border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-600"
-            />
-            <button
-              className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
-              onClick={() => {}}
-            >
-              Signup
-            </button>
+            <form className="space-y-3" onSubmit={handleSubmit}>
+              <input
+                type="name"
+                placeholder="Name"
+                value={form.name}
+                onChange={(e) => setForm({ ...form, name: e.target.value })}
+                className="w-full px-4 py-2 bg-white border rounded border-green-300 focus:outline-none focus:ring-2  focus:ring-green-600"
+              />
+              <input
+                type="email"
+                placeholder="Email"
+                value={form.email}
+                onChange={(e) => setForm({ ...form, email: e.target.value })}
+                className="w-full px-4 py-2 bg-white border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-600"
+              />
+              <input
+                type="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={(e) => setForm({ ...form, password: e.target.value })}
+                className="w-full px-4 py-2 bg-white  border rounded border-green-300 focus:outline-none focus:ring-2 focus:ring-green-600"
+              />
+              <button
+                className="w-full bg-green-600 text-white py-2 rounded hover:bg-green-700"
+                type="submit"
+                disabled={onLoading}
+              >
+                {onLoading ? "Loading..." : "Signup"}
+              </button>
+            </form>
             <div className="border-t border-green-300 my-4"></div>
             <button
               className="w-full text-green-600 bg-white outline shadow-md py-2 rounded hover:bg-green-700 hover:text-white"
-              onClick={() => { navigate("/verify") }}
+              onClick={() => {
+                navigate("/verify");
+              }}
             >
               Verify yourself!
             </button>
           </div>
 
           <p className="mt-6 text-sm text-gray-600 text-center">
-          Have an account?{" "}
+            Have an account?{" "}
             <a href="/" className="text-green-700 hover:underline font-medium">
               Login
             </a>

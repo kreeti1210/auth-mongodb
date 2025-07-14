@@ -2,7 +2,8 @@ import jwt from "jsonwebtoken";
 
 export const isLoggedIn = async (req, res, next) => {
   try {
-    console.log(req.cookies);
+    console.log("Cookies:", req.cookies);
+    console.log("Headers:", req.headers);
     let token = req.cookies?.token;
     console.log("Token found:", token ? "YES" : "NO");
     if (!token) {
@@ -14,7 +15,6 @@ export const isLoggedIn = async (req, res, next) => {
     try {
       const decoded = jwt.verify(token, process.env.JWT_KEY);
       console.log(decoded);
-
       req.user = decoded;
     
     } catch (error) {
@@ -24,6 +24,8 @@ export const isLoggedIn = async (req, res, next) => {
         message: "Internal Failure",
       });
     }
-  } catch (error) {}
+  } catch (error) {
+    
+  }
   next();
 };

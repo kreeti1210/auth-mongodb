@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { Toaster } from "react-hot-toast";
 
 import "./index.css";
 import {
@@ -16,6 +17,7 @@ import VerifyPassword from "./components/pages/VerifyPassword.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
+    
     <Route>
       <Route path="/" element={<Login />} />
       <Route path="/home" element={<Home />} />
@@ -30,6 +32,7 @@ const router = createBrowserRouter(
 function App() {
   return (
     <>
+      <Toaster />
       <RouterProvider router={router} />
     </>
   );

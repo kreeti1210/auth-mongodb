@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import { error } from "console";
-import e from "express";
+import e, { response } from "express";
 
 dotenv.config();
 
@@ -71,6 +71,7 @@ const registerUser = async (req, res) => {
 
     //send success status to user
     res.status(201).json({
+      user,
       message: "User registered succesfully",
       success: true,
     });
@@ -113,6 +114,7 @@ const verifyUser = async (req, res) => {
 
   //return response
   return res.status(200).json({
+    user,
     success: true,
     message: "User Verified successfully!",
   });
@@ -121,76 +123,66 @@ const verifyUser = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
+  // Validate input
   if (!email || !password) {
-    return res.status(400).json({
-      message: "All fields are required",
-    });
+    return res.status(400).json({ message: "All fields are required" });
   }
 
   try {
     const user = await User.findOne({ email });
-    console.log(user);
 
     if (!user) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid email or password",
-      });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid email or password" });
     }
 
     if (!user.isVerified) {
-      return res.status(400).json({
-        success: false,
-        message: "please verify your email",
-      });
+      return res
+        .status(400)
+        .json({ success: false, message: "Please verify your email" });
     }
 
     const isMatch = await bcrypt.compare(password, user.password);
-    console.log(isMatch);
-
     if (!isMatch) {
-      return res.status(400).json({
-        message: "Invalid email or password",
-        success: false,
-        error,
-
-      });
+      return res
+        .status(400)
+        .json({ success: false, message: "Invalid email or password" });
     }
 
-    //login token
+    // Generate JWT
     const token = jwt.sign(
       { id: user._id, role: user.role },
       process.env.JWT_KEY,
-      {
-        expiresIn: "24h",
-      }
+      { expiresIn: "24h" }
     );
 
+    // Set cookie
     const cookieOptions = {
       httpOnly: true,
-      secure: true,
       maxAge: 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "none",
     };
 
-    res.cookie("token", token, cookieOptions); //cookie accepts key pair value
+    res.cookie("token", token, cookieOptions);
 
-    res.status(200).json({
+    // Respond with success
+    return res.status(200).json({
       success: true,
-      message: "Login Successful",
-      token,
-      user: {
-        name: user.name,
-        id: user._id,
-        role: user.role,
-      },
+      message: "Login successful",
+      token: token,
+      user,
     });
   } catch (error) {
-    return res.status(400).json({
+    console.error("Login error:", error);
+    return res.status(500).json({
       success: false,
-      message: "Something went wrong while login",
+      message: "Something went wrong during login",
     });
   }
 };
+
 
 const getMe = async (req, res) => {
   try {
@@ -203,6 +195,7 @@ const getMe = async (req, res) => {
       });
     }
     return res.status(200).json({
+      user,
       success: true,
       user,
     });
@@ -215,8 +208,9 @@ const getMe = async (req, res) => {
 };
 const logoutUser = async (req, res) => {
   try {
-    res.cookie("token", "", {});
-
+ 
+    res.clearCookie("token", {});
+    
     res.status(200).json({
       success: true,
       message: "Logout successful!",
@@ -280,6 +274,7 @@ const forgotPassword = async (req, res) => {
     await transporter.sendMail(mailOption);
 
     return res.status(200).json({
+      user,
       success: true,
       message: "Reset token sent successfully!",
     });
@@ -315,6 +310,7 @@ const resetPassword = async (req, res) => {
       await user.save();
 
       return res.status(200).json({
+        user,
         success: true,
         message: "Password Changed Successfully",
       });
