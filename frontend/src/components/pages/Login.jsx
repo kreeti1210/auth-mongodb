@@ -1,7 +1,5 @@
-import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import toast from "react-hot-toast";
 import { useAuthStore } from "../../store/useAuthStore.js";
 
 const Login = () => {
@@ -12,8 +10,7 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await login(form);       
-      console.log(user);
+      const response = await login(form);
       navigate("/home");
     } catch (error) {
       console.log(error);
@@ -44,11 +41,11 @@ const Login = () => {
           </h2>
 
           <div className="space-y-3">
-            <button className="w-full flex items-center justify-center bg-white outline shadow-md text-green-700 py-2 px-4 rounded hover:bg-green-700 hover:text-white">
+            <button className=" disabled cursor-not-allowed w-full flex items-center justify-center bg-white outline shadow-md text-green-700 py-2 px-4 rounded hover:bg-green-700 hover:text-white">
               Google{" "}
               <img src="\src\assets\google.jpg" alt="" className="w-6 ml-2" />
             </button>
-            <button className="w-full flex items-center justify-center bg-white outline shadow-md text-green-700 py-2 px-4 rounded hover:bg-green-800 hover:text-white">
+            <button className="w-full disabled cursor-not-allowed flex items-center justify-center bg-white outline shadow-md text-green-700 py-2 px-4 rounded hover:bg-green-800 hover:text-white">
               GitHub
               <span>
                 <img src="\src\assets\github.svg" alt="" className="w-6 ml-2" />
@@ -72,7 +69,7 @@ const Login = () => {
               />
 
               <button
-                className="w-full bg-green-600 text-white py-2 rounded mt-1 hover:bg-green-700"
+                className="w-full bg-green-600 cursor-pointer text-white py-2 rounded mt-1 hover:bg-green-700"
                 type="submit"
                 disabled={onLoading}
                 onClick={handleSubmit}

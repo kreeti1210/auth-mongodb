@@ -7,6 +7,7 @@ import dotenv from "dotenv";
 import { error } from "console";
 import e, { response } from "express";
 
+
 dotenv.config();
 
 const registerUser = async (req, res) => {
@@ -123,7 +124,6 @@ const verifyUser = async (req, res) => {
 const login = async (req, res) => {
   const { email, password } = req.body;
 
-  // Validate input
   if (!email || !password) {
     return res.status(400).json({ message: "All fields are required" });
   }
@@ -143,6 +143,7 @@ const login = async (req, res) => {
         .json({ success: false, message: "Please verify your email" });
     }
 
+    // Check password
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch) {
       return res
@@ -299,8 +300,8 @@ const resetPassword = async (req, res) => {
         resetPasswordExpires: { $gt: Date.now() },
       });
 
-      //set password in user
-      user.password = await bcrypt.hash(password, 10);
+      //set password in user   
+      user.password = password;
 
       //reset token, resetExpiry =>empty
       user.resetPasswordExpires = undefined;

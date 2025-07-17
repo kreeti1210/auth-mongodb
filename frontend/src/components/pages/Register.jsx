@@ -15,7 +15,6 @@ const Register = () => {
     e.preventDefault();
     try {
       const response = await registerUser(form);
-      console.log(user);
       navigate("/verify");
     } catch (error) {
       console.log(error);   

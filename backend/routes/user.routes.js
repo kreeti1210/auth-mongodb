@@ -17,5 +17,5 @@ router.post("/login",login);
 router.get("/me", isLoggedIn, getMe); //event driven programming only when url is hit then it happens
 router.get("/logout",logoutUser);
 router.post("/forgotPassword", forgotPassword);
-router.get("/resetPassword/:token",resetPassword)
+router.post("/resetPassword/:token",resetPassword)
 export default router;

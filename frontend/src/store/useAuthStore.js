@@ -4,6 +4,7 @@ import axiosInstance from "../lib/axios.js";
 import { toast } from "react-hot-toast";
 
 
+
 export const useAuthStore = create((set) => ({
   onLoading: false,
   user: null,
@@ -15,7 +16,7 @@ export const useAuthStore = create((set) => ({
       const response = await axiosInstance.post("/register", data, {
         withCredentials: true,
       });
-      console.log(response.data);
+    
       set({ user: response.data.user });
       toast.success("User registered successfully!");
     } catch (error) {
@@ -33,9 +34,6 @@ export const useAuthStore = create((set) => ({
         withCredentials: true,
       });
       set({ user: response.data.user });
-      console.log(response.data);
-      
-
       toast.success("User logged in successfully!");
     } catch (error) {
       console.error("Error logging in user:", error);
@@ -51,7 +49,6 @@ export const useAuthStore = create((set) => ({
       const response = await axiosInstance.get(`/verify/${token}`, {
         withCredentials: true,
       });
-      console.log(response.data);
       set({ isVerified: true });
       toast.success("User verified successfully!");
     } catch (error) {
@@ -75,6 +72,37 @@ export const useAuthStore = create((set) => ({
     } catch (error) {
       console.error("Error logging out user:", error);
       toast.error("User logged out was unsuccessful!");
+      throw error;
+    } finally {
+      set({ onLoading: false });
+    }
+  },
+  forgotPassword: async (data) => {
+    try {
+      set({ onLoading: true });
+      const response = await axiosInstance.post("/forgotPassword", data, {
+        withCredentials: true,
+      });
+
+      toast.success("Password reset link sent successfully!");
+    } catch (error) {
+      console.error("Error sending password reset link:", error);
+      toast.error("Error sending password reset link!");
+      throw error;
+    } finally {
+      set({ onLoading: false });
+    }
+  },
+  resetPassword: async (data) => {
+    try {
+      set({ onLoading: true });
+      const response = await axiosInstance.post(`/resetPassword/${data.token}`, data, {
+        withCredentials: true,
+      });
+      toast.success("Password reset successfully!");
+    } catch (error) {
+      console.error("Error resetting password:", error);
+      toast.error("Error resetting password!");
       throw error;
     } finally {
       set({ onLoading: false });
