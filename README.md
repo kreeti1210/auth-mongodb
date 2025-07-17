@@ -45,9 +45,9 @@ A lightweight, production-ready authentication backend built with **Node.js**, *
 
 Here are some glimpses of my website!
 
-![signup](image.png)
-![verifypage](image-1.png)
-![[loginpage]](image-2.png)
-![Home](image-3.png)
-![forgotpassword](image-4.png)
-![resetpassword](image-5.png)
+![signup](/screenshot/image.png)
+![verifypage](/screenshot/image-1.png)
+![[loginpage]](/screenshot/image-2.png)
+![Home](/screenshot/image-3.png)
+![forgotpassword](/screenshot/image-4.png)
+![resetpassword](/screenshot/image-5.png)
