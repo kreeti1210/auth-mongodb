@@ -22,6 +22,11 @@ A lightweight, production-ready authentication backend built with **Node.js**, *
 - **bcryptjs**
 - **jsonwebtoken**
 - **dotenv**
+- **react**
+- **tailwindcss**
+- **nodemailer**
+- **axios**
+- **zustand**
 
 
 ---
@@ -35,3 +40,14 @@ A lightweight, production-ready authentication backend built with **Node.js**, *
    cd auth-mongodb
    ```
 ---
+
+## 📝 Website look
+
+Here are some glimpses of my website!
+
+![signup](image.png)
+![verifypage](image-1.png)
+![[loginpage]](image-2.png)
+![Home](image-3.png)
+![forgotpassword](image-4.png)
+![resetpassword](image-5.png)
